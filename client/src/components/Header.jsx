@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 
 const Header = () => {
   return (
-    <div className="flex flex-col justify-center text-center items-center my-24 relative z-10">
+    <div className="flex flex-col justify-center text-center items-center my-18 relative z-10">
       
       {/* Top Badge */}
       <div className="inline-flex items-center gap-2 text-center bg-white/5 backdrop-blur-md px-6 py-1.5 rounded-full border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:border-purple-500/50 transition-colors duration-300 cursor-pointer">
