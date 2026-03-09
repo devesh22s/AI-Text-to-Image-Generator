@@ -1,10 +1,50 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Login = () => {
     const [state, setState] = useState('Login')
-    const {setShowLogin} = useContext(AppContext)
+    const {setShowLogin, backendurl, setUser, setToken } = useContext(AppContext)
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [pass, setPass] = useState('')
+
+
+    const onsubmitHandler = async(e)=>{
+        e.preventDefault();
+
+        try {
+            if (state == 'Login') {
+              const {data} =   await axios.post(backendurl + 'api/user/login', {email, pass})
+
+              if (data.success) {
+                setUser(data.user)
+                setToken(data.token)
+                localStorage.setItem('token', data.token)
+                setShowLogin(false)           
+              }  else{
+                toast.error(data.message)
+              }         
+            }
+            else{
+            const {data} =   await axios.post(backendurl + 'api/user/register', {name, email, pass})
+            if (data.success) {
+                setUser(data.user)
+                setToken(data.token)
+                localStorage.setItem('token', data.token)
+                setShowLogin(false)           
+              }  else{
+                toast.error(data.message)
+              }    
+
+
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
     
     useEffect(()=>{
         document.body.style.overflow = 'hidden';
@@ -17,7 +57,7 @@ const Login = () => {
     <div className='fixed top-0 left-0 right-0 bottom-0 backdrop-blur-md z-50 bg-black/60 flex justify-center items-center px-4'>
         
         {/* Glassmorphism Card */}
-        <form className='relative bg-[#121214]/90 border border-white/10 p-8 sm:p-10 rounded-2xl shadow-[0_0_40px_rgba(168,85,247,0.2)] w-full max-w-md'>
+        <form onSubmit={onsubmitHandler} className='relative bg-[#121214]/90 border border-white/10 p-8 sm:p-10 rounded-2xl shadow-[0_0_40px_rgba(168,85,247,0.2)] w-full max-w-md'>
             
             <h1 className='text-center text-3xl text-white font-bold tracking-wide'>{state}</h1>
             <p className='text-sm text-center text-gray-400 mt-2 mb-8'>Welcome back! Please sign in to continue</p>
@@ -26,18 +66,18 @@ const Login = () => {
                 { state !== 'Login' &&
                 <div className='px-6 py-3 bg-white/5 border border-white/10 flex items-center gap-3 rounded-full hover:border-purple-500/50 transition-colors'>
                     <img src={assets.users_icon} alt="" className='w-5 opacity-70 invert' />
-                    <input type="text" placeholder='Full Name' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
+                    <input onChange={e=> setName(e.target.value)} value={name} type="text" placeholder='Full Name' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
                 </div>
                 }
                 
                 <div className='px-6 py-3 bg-white/5 border border-white/10 flex items-center gap-3 rounded-full hover:border-purple-500/50 transition-colors'>
                     <img src={assets.users_icon} alt="" className='w-5 opacity-70 invert' />
-                    <input type="email" placeholder='Email id' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
+                    <input onChange={e=> setEmail(e.target.value)} value={email}  type="email" placeholder='Email id' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
                 </div>
                 
                 <div className='px-6 py-3 bg-white/5 border border-white/10 flex items-center gap-3 rounded-full hover:border-purple-500/50 transition-colors'>
                     <img src={assets.users_icon} alt="" className='w-5 opacity-70 invert' />
-                    <input type="password" placeholder='Password' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
+                    <input onChange={e=> setPass(e.target.value)} value={pass}  type="password" placeholder='Password' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
                 </div>
             </div>
 
