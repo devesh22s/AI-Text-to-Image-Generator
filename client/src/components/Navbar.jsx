@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext.jsx";
 
 const Navbar = () => {
-  const { user, setShowLogin } = useContext(AppContext);
+  const { user, setShowLogin, logout, credit } = useContext(AppContext);
   const navigate = useNavigate();
 
   return (
@@ -25,12 +25,12 @@ const Navbar = () => {
               alt="credits"
             />
             <p className="text-[10px] sm:text-sm font-medium text-gray-200">
-              <span className="hidden sm:inline">Credits: </span>50
+              <span className="hidden sm:inline">Credits left: {credit}</span>
             </p>
           </button>
 
           <p className="text-gray-300 hidden md:block pl-2 font-medium text-sm">
-            Hi, Devesh
+            Hi, {user.name}
           </p>
 
           <div className="relative group">
@@ -43,7 +43,7 @@ const Navbar = () => {
             </div>
             <div className="absolute hidden group-hover:block right-0 top-8 sm:top-10 z-20 pt-4">
               <ul className="list-none m-0 p-2 bg-[#121214] rounded-lg border border-white/10 shadow-xl text-sm w-28 sm:w-32">
-                <li className="py-2 px-4 cursor-pointer text-gray-300 hover:text-white hover:bg-white/5 rounded">
+                <li onClick={logout} className="py-2 px-4 cursor-pointer text-gray-300 hover:text-white hover:bg-white/5 rounded">
                   Logout
                 </li>
               </ul>

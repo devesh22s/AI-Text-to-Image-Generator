@@ -10,7 +10,7 @@ export const userAuth = async(req, res, next)=>{
     try {
         const tokenDecode = jwt.verify(token, process.env.JWT_Secret);
         if(tokenDecode.id){   // because the token ki created from user id and jwt secret
-            req.body.userId_ = tokenDecode.id  
+            req.userId = tokenDecode.id  
         }else{
             return res.json({success: false, message: "Not Authorized, Login Again"})
         }

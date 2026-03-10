@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
@@ -7,9 +9,20 @@ const Result = () => {
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
 
+  const { generateImage } = useContext(AppContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Tumhara generation logic yahan aayega
+    setLoading(true);
+    if (input) {
+      const image = await generateImage(input);
+      if (image) {
+        setIsImageLoaded(true);
+        setImage(image);
+      }
+    }
+    setLoading(false);
+    setInput("")
   };
 
   return (
@@ -21,14 +34,22 @@ const Result = () => {
         {/* Image Container with Glow */}
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg blur opacity-40 transition duration-1000"></div>
-          <img src={image} alt="generated" className="relative max-w-xs sm:max-w-sm rounded-lg border border-white/20 shadow-2xl" />
-          
+          <img
+            src={image}
+            alt="generated"
+            className="relative max-w-xs sm:max-w-sm rounded-lg border border-white/20 shadow-2xl"
+          />
+
           {/* Animated Gradient Loading Bar */}
           <span
             className={`absolute bottom-0 left-0 h-1.5 bg-gradient-to-r from-cyan-400 via-purple-500 to-fuchsia-500 rounded-b-lg ${loading ? "w-full transition-all duration-[10s] ease-in-out" : "w-0"}`}
           />
         </div>
-        <p className={`mt-4 text-cyan-400 font-medium tracking-widest animate-pulse ${!loading ? "hidden" : ""}`}>GENERATING...</p>
+        <p
+          className={`mt-4 text-cyan-400 font-medium tracking-widest animate-pulse ${!loading ? "hidden" : ""}`}
+        >
+          GENERATING...
+        </p>
       </div>
 
       {!isimageLoaded && (

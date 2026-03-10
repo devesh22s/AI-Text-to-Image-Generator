@@ -1,11 +1,12 @@
 import axios from "axios";
-import userModel from "../Model/userModel.js";
+import userModel from "../models/userModel.js";
 import FormData from "form-data";
 
 export const imageGenerate = async (req, res) => {
   try {
-    const { userId_, prompt } = req.body;
-    const user = await userModel.findById(userId_);
+    const { prompt } = req.body;
+    const userId = req.userId
+    const user = await userModel.findById(userId);
     if (!user || !prompt) {
       return res.json({ success: false, message: "Missing details" });
     }

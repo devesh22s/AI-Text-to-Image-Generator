@@ -9,15 +9,15 @@ const Login = () => {
     const {setShowLogin, backendurl, setUser, setToken } = useContext(AppContext)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [pass, setPass] = useState('')
+    const [password, setPassword] = useState('')
 
 
     const onsubmitHandler = async(e)=>{
         e.preventDefault();
 
         try {
-            if (state == 'Login') {
-              const {data} =   await axios.post(backendurl + 'api/user/login', {email, pass})
+            if (state === 'Login') {
+              const {data} =   await axios.post(backendurl + '/api/user/login', {email, password})
 
               if (data.success) {
                 setUser(data.user)
@@ -29,7 +29,7 @@ const Login = () => {
               }         
             }
             else{
-            const {data} =   await axios.post(backendurl + 'api/user/register', {name, email, pass})
+            const {data} =   await axios.post(backendurl + '/api/user/register', {name, email, password})
             if (data.success) {
                 setUser(data.user)
                 setToken(data.token)
@@ -77,7 +77,7 @@ const Login = () => {
                 
                 <div className='px-6 py-3 bg-white/5 border border-white/10 flex items-center gap-3 rounded-full hover:border-purple-500/50 transition-colors'>
                     <img src={assets.users_icon} alt="" className='w-5 opacity-70 invert' />
-                    <input onChange={e=> setPass(e.target.value)} value={pass}  type="password" placeholder='Password' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
+                    <input onChange={e=> setPassword(e.target.value)} value={password}  type="password" placeholder='Password' required className='bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500'/>
                 </div>
             </div>
 
